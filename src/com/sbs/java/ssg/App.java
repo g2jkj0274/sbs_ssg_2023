@@ -1,5 +1,6 @@
 package com.sbs.java.ssg;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -46,15 +47,36 @@ public class App {
 
 				System.out.printf("%d번 글이 생성되었습니다.\n", id);
 			}
-			else if(command.equals("article list")) {
+			else if(command.startsWith("article list")) {
 				if (articles.size() == 0) {
 					System.out.println("게시물이 없습니다.");
 					continue;
 				}
+				
+				String searchkeyword = command.substring("article list".length()).trim();
+				
+				System.out.printf("검색어 : %s\n", searchkeyword);
+				
+				List<Article> forListArticles = articles;
+				
+				if(searchkeyword.length() > 0) {
+					forListArticles = new ArrayList<>();
+					
+					for(Article article : articles) {
+						if(article.title.contains(searchkeyword)) {
+							forListArticles.add(article);
+						}
+						
+						if(articles.size() == 0) {
+							System.out.println("검색 결과 없음");
+							continue;
+						}
+					}
+				}
 
 				System.out.println("번호 | 조회 | 제목");
-				for(int i = articles.size() - 1; i >= 0; i--) {
-					Article article = articles.get(i);
+				for(int i = forListArticles.size() - 1; i >= 0; i--) {
+					Article article = forListArticles.get(i);
 
 					System.out.printf("%4d | %4d | %s\n", article.id, article.hit, article.title);
 				}
