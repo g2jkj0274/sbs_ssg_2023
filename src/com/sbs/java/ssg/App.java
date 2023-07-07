@@ -1,18 +1,22 @@
 package com.sbs.java.ssg;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.sbs.java.ssg.controller.ArticleContoller;
+import com.sbs.java.ssg.controller.MemberContoller;
 import com.sbs.java.ssg.dto.Article;
+import com.sbs.java.ssg.dto.Member;
 import com.sbs.java.ssg.util.Util;
 
 public class App {
 	private List<Article> articles;
+	private List<Member> members;
 
 	public App() {
 		articles = new ArrayList<>();
+		members = new ArrayList<>();
 	}
 
 	public void start() {
@@ -21,6 +25,9 @@ public class App {
 		makeTastData();
 
 		Scanner sc = new Scanner(System.in);
+		
+		MemberContoller memberContoller = new MemberContoller(sc, members);
+		ArticleContoller articleController = new ArticleContoller();
 
 		while(true) {
 			System.out.printf("명령어) ");
@@ -34,6 +41,11 @@ public class App {
 			if(command.equals("system exit")) {
 				break;
 			} 
+			
+			else if(command.equals("member join")) {
+				memberContoller.doJoin();
+			}
+			
 			else if(command.equals("article write")) {
 				int id = articles.size() + 1;
 				String regDate = Util.getNowDateStr();
@@ -154,6 +166,7 @@ public class App {
 				return i;
 			}
 		}
+		i++;
 		return -1;
 	}
 
