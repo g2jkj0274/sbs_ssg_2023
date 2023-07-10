@@ -1,17 +1,32 @@
 package com.sbs.java.ssg.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.sbs.java.ssg.dto.Member;
 import com.sbs.java.ssg.util.Util;
 
-public class MemberContoller {
+public class MemberController extends Controller {
 	private Scanner sc;
 	private List<Member> members;
-	public MemberContoller(Scanner sc, List<Member> members) {
+	private String command;
+	private String actionMethodName;
+
+	public MemberController(Scanner sc) {
 		this.sc = sc;
-		this.members = members;
+		this.members = new ArrayList<Member>();
+	}
+
+	public void doAction(String command, String actionMethodName) {
+		this.command = command;
+		this.actionMethodName = actionMethodName;
+
+		switch ( actionMethodName ) {
+		case "join":
+			doJoin();
+			break;
+		}
 	}
 	private int getMemberIndexByLoginID(String loginID) {
 		int i = 0;
@@ -22,7 +37,6 @@ public class MemberContoller {
 		}
 		return -1;
 	}
-	
 	private boolean isJoinableLoginID(String loginID) {
 		int index = getMemberIndexByLoginID(loginID);
 		if(index == -1) {
